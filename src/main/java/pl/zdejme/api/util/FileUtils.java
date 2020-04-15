@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class FileUtils {
 
-    public static final Map<String, Path> downloadDirectories = Map.of(
+    public final Map<String, Path> downloadDirectories = Map.of(
             "upload", Path.of("src/main/resources/static/uploads"),
             "ascii", Path.of("src/main/resources/static/converted/ascii"),
             "gray", Path.of("src/main/resources/static/converted/grayscale"),

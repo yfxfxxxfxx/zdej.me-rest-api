@@ -1,5 +1,6 @@
 package pl.zdejme.api.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,9 +11,12 @@ import pl.zdejme.api.util.FileUtils;
 import pl.zdejme.api.util.ImageUtils;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/image")
@@ -92,5 +96,36 @@ public class ImageController {
         return ResponseEntity.ok("http://localhost/" +
                 conversionSubdirectories.get(conversionType.toLowerCase()) + "/" +
                 currentImage.getFilename());
+    }
+
+    @PostMapping("/multiple-upload-init")
+    public ResponseEntity<String> uploadMultipleImages(@RequestParam("files") List<MultipartFile> files) {
+        StringBuilder success = new StringBuilder();
+        ImageRequest imageRequest = new ImageRequest();
+        Path uploadDestination = Path.of("src/main/resources/static/uploads");
+
+        success.append(
+                String.format("\nSaved %d files to %s:\n", files.size(), uploadDestination));
+
+        try {
+            for (MultipartFile file : files) {
+                Files.deleteIfExists(
+                        uploadDestination.resolve(Objects.requireNonNull(file.getOriginalFilename())));
+                imageService.deleteByName(file.getOriginalFilename());
+
+                imageRequest.setFilename(file.getOriginalFilename());
+                imageRequest.setFormat(
+                        fileUtils.getFileExtension(file.getOriginalFilename()));
+                imageRequest.setFilepath(String.valueOf(uploadDestination));
+
+                Image currentImage = imageService.saveImage(imageRequest);
+
+                Files.write(uploadDestination.resolve(currentImage.getFilename()), file.getBytes());
+                success.append(currentImage.getFilename()).append("\n");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed to initialize: " + e.getLocalizedMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(success.toString());
     }
 }
