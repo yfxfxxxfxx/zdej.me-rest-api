@@ -5,6 +5,7 @@ import pl.zdejme.api.exception.ImageNotPresentException;
 import pl.zdejme.api.model.Image;
 import pl.zdejme.api.repository.ImageRepository;
 import pl.zdejme.api.request.ImageRequest;
+import pl.zdejme.api.util.FileUtils;
 
 import javax.transaction.Transactional;
 import java.time.OffsetDateTime;
@@ -16,9 +17,11 @@ import java.util.UUID;
 public class ImageService {
 
     private final ImageRepository imageRepository;
+    private final FileUtils fileUtils;
 
-    public ImageService(ImageRepository imageRepository) {
+    public ImageService(ImageRepository imageRepository, FileUtils fileUtils) {
         this.imageRepository = imageRepository;
+        this.fileUtils = fileUtils;
     }
 
     public Long countSavedImages() {
@@ -64,8 +67,21 @@ public class ImageService {
         for (Image image : findAll()) {
             filenameElements = image.getFilename().split("_");
             if(filenameElements[1].toLowerCase().equals(filename.toLowerCase())) {
-                imageRepository.delete(image);
+                deleteById(image.getId());
             }
         }
+    }
+
+    public void deleteById(Long id) {
+        Image toDelete = findById(id);
+        fileUtils.deleteFromDirectory(toDelete.getFilepath());
+        imageRepository.delete(toDelete);
+    }
+
+    public void deleteOldestImage() {
+        Optional<Image> oldestImage = imageRepository.findFirstByOrderByAddedOn();
+
+        oldestImage.ifPresent(image -> fileUtils.deleteFromDirectory(image.getFilepath()));
+        oldestImage.ifPresent(imageRepository::delete);
     }
 }
