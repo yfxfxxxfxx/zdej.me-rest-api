@@ -7,6 +7,7 @@ import pl.zdejme.api.model.Image;
 import pl.zdejme.api.request.ImageRequest;
 import pl.zdejme.api.service.ImageService;
 import pl.zdejme.api.util.FileUtils;
+import pl.zdejme.api.util.ImageUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +19,16 @@ public class ImageController {
 
     private final ImageService imageService;
     private final FileUtils fileUtils;
+    private final ImageUtils imageUtils;
 
-    public ImageController(ImageService imageService, FileUtils fileUtils) {
+    public ImageController(
+            ImageService imageService,
+            FileUtils fileUtils,
+            ImageUtils imageUtils
+    ) {
         this.imageService = imageService;
         this.fileUtils = fileUtils;
+        this.imageUtils = imageUtils;
     }
 
     @GetMapping
@@ -38,11 +45,11 @@ public class ImageController {
 
     @PostMapping
     public ResponseEntity<String> postImage(
-       @RequestParam("file") MultipartFile file,
-       @RequestParam("conversion-type") String conversionType,
-       @RequestParam("contrast") float contrast
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("conversion-type") String conversionType,
+            @RequestParam("contrast") float contrast
     ) throws IOException {
-        if(imageService.countSavedImages() > 8) {
+        if (imageService.countSavedImages() > 50) {
             imageService.deleteOldestImage();
         }
         imageService.deleteByName(file.getOriginalFilename());
@@ -67,6 +74,8 @@ public class ImageController {
         //second target directory is for the image being operated on
         //applies indicated contrast before image manipulation
         String convertedLocation = targetDirectories.get(1);
+
+        imageUtils.applyContrast(convertedLocation, imageRequest.getFormat(), contrast);
 
         return null;
     }
