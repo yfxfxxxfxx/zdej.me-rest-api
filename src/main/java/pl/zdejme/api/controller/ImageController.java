@@ -12,11 +12,20 @@ import pl.zdejme.api.util.ImageUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/image")
 public class ImageController {
 
+    public static final Map<String, String> conversionSubdirectories = Map.of(
+            "ascii", "ascii",
+            "gray", "grayscale",
+            "neg", "negative",
+            "rgb0", "rgb/blue",
+            "rgb1", "rgb/green",
+            "rgb2", "rgb/red"
+    );
     private final ImageService imageService;
     private final FileUtils fileUtils;
     private final ImageUtils imageUtils;
@@ -37,7 +46,7 @@ public class ImageController {
 
         for (Image image : imageService.findAll()) {
             //TODO: update once server location is determined
-            imageLinks.add("http://location-of-server/uploads/" + image.getFilename());
+            imageLinks.add("http://localhost/uploads/" + image.getFilename());
         }
 
         return ResponseEntity.ok(imageLinks);
@@ -77,6 +86,11 @@ public class ImageController {
 
         imageUtils.applyContrast(convertedLocation, imageRequest.getFormat(), contrast);
 
-        return null;
+        imageUtils.processImage(convertedLocation, conversionType);
+
+        //TODO: update once server location is determined
+        return ResponseEntity.ok("http://localhost/" +
+                conversionSubdirectories.get(conversionType.toLowerCase()) + "/" +
+                currentImage.getFilename());
     }
 }
