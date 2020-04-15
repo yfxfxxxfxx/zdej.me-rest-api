@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class NegativeConverter implements ImageConverter {
     @Override
-    public void processImage(MBFImage image) throws IOException {
+    public void processImage(MBFImage image) {
 
     }
 }
