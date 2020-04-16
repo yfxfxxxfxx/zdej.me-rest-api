@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+//TODO: update once client location determined
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/image")
 public class ImageController {
