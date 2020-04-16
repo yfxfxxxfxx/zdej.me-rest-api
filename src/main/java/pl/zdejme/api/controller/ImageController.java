@@ -67,6 +67,11 @@ public class ImageController {
         if (imageService.countSavedImages() > 50) {
             imageService.deleteOldestImage();
         }
+
+        System.out.println("File: " + file);
+        System.out.println("Conversion type: " + conversionType);
+        System.out.println("Contrast: " + contrast);
+
         imageService.deleteByName(file.getOriginalFilename());
 
         ImageRequest imageRequest = new ImageRequest();
