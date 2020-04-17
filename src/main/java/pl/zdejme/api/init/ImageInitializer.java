@@ -2,6 +2,7 @@ package pl.zdejme.api.init;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,7 @@ import pl.zdejme.api.util.FileUtils;
 
 import javax.annotation.PreDestroy;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -39,13 +41,13 @@ public class ImageInitializer implements CommandLineRunner {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         body.put("files", List.of(
-//                new FileSystemResource("C:\\Users\\kthor\\zdej.me\\api\\src\\main\\resources\\init\\GettyImages-142116239_medium.jpg")
-                new FileSystemResource("src\\main\\resources\\init\\GettyImages-142116239_medium.jpg"),
-                new FileSystemResource("src\\main\\resources\\init\\orca.jpg"),
-                new FileSystemResource("src\\main\\resources\\init\\pacnw.jpg"),
-                new FileSystemResource("src\\main\\resources\\init\\platonov.png"),
-                new FileSystemResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
-                )
+                new ClassPathResource("init\\GettyImages-142116239_medium.jpg", this.getClass().getClassLoader()))
+//                new FileSystemResource("src\\main\\resources\\init\\GettyImages-142116239_medium.jpg"),
+//                new FileSystemResource("src\\main\\resources\\init\\orca.jpg"),
+//                new FileSystemResource("src\\main\\resources\\init\\pacnw.jpg"),
+//                new FileSystemResource("src\\main\\resources\\init\\platonov.png"),
+//                new FileSystemResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
+//                )
         );
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
