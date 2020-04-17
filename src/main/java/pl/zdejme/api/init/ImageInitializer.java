@@ -52,7 +52,7 @@ public class ImageInitializer implements CommandLineRunner {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverUrl = "http://localhost/image/multiple-upload-init";
+        String serverUrl = "https://zdej-me.herokuapp.com//multiple-upload-init";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
         log.info(Objects.requireNonNull(response).getBody());
