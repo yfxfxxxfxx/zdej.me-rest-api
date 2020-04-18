@@ -49,7 +49,7 @@ public class ImageController {
 
         for (Image image : imageService.findAll()) {
             //TODO: update once server location is determined
-            imageLinks.add("http://localhost/uploads/" + image.getFilename());
+            imageLinks.add("https://zdej-me.herokuapp.com/uploads/" + image.getFilename());
         }
 
         return ResponseEntity.ok(imageLinks);
