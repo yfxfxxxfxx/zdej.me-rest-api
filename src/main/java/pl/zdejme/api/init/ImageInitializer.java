@@ -1,6 +1,8 @@
 package pl.zdejme.api.init;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
@@ -41,7 +43,8 @@ public class ImageInitializer implements CommandLineRunner {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         body.put("files", List.of(
-                this.getClass().getResourceAsStream("init\\GettyImages-142116239_medium.jpg")
+                ImageInitializer.class.getResourceAsStream("/init/GettyImages-142116239_medium.jpg")
+//                new ClassPathResource("init\\GettyImages-142116239_medium.jpg", this.getClass().getClassLoader())
 //                new ClassPathResource("src\\main\\resources\\init\\orca.jpg"),
 //                new ClassPathResource("src\\main\\resources\\init\\pacnw.jpg"),
 //                new ClassPathResource("src\\main\\resources\\init\\platonov.png"),
@@ -51,8 +54,8 @@ public class ImageInitializer implements CommandLineRunner {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverUrl = "https://zdej-me.herokuapp.com/image/multiple-upload-init";
-//        String serverUrl = "http://localhost/image/multiple-upload-init";
+//        String serverUrl = "https://zdej-me.herokuapp.com/image/multiple-upload-init";
+        String serverUrl = "http://localhost/image/multiple-upload-init";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
         log.info(Objects.requireNonNull(response).getBody());
