@@ -35,7 +35,7 @@ public class ImageInitializer implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.setAccept(Collections.singletonList(MediaType.ALL));
@@ -43,19 +43,21 @@ public class ImageInitializer implements CommandLineRunner {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         body.put("files", List.of(
-                ImageInitializer.class.getResource("/init/GettyImages-142116239_medium.jpg")
-//                new ClassPathResource("init\\GettyImages-142116239_medium.jpg", this.getClass().getClassLoader())
-//                new ClassPathResource("src\\main\\resources\\init\\orca.jpg"),
-//                new ClassPathResource("src\\main\\resources\\init\\pacnw.jpg"),
-//                new ClassPathResource("src\\main\\resources\\init\\platonov.png"),
-//                new ClassPathResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
+                //this configuration is required for Heroku because Heroku must extract the resources from the JAR instead of from an exploded classpath
+                //does not work locally however - for local startup new ClassPathResource(path, this.getClass().getClassLoader()) is required
+                ImageInitializer.class.getResource("/init/GettyImages-142116239_medium.jpg"),
+                ImageInitializer.class.getResource("src\\main\\resources\\init\\orca.jpg"),
+                ImageInitializer.class.getResource("src\\main\\resources\\init\\pacnw.jpg"),
+                ImageInitializer.class.getResource("src\\main\\resources\\init\\platonov.png"),
+                ImageInitializer.class.getResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
                 )
         );
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         String serverUrl = "https://zdej-me.herokuapp.com/image/multiple-upload-init";
-//        String serverUrl = "http://localhost/image/multiple-upload-init";
+        //url for local nginx init
+//        String localServerUrl = "http://localhost/image/multiple-upload-init";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
         log.info(Objects.requireNonNull(response).getBody());

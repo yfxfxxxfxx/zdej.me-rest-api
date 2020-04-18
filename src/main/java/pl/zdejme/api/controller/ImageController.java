@@ -128,7 +128,7 @@ public class ImageController {
                 success.append(currentImage.getFilename()).append("\n");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed to initialize: " + Arrays.toString(e.getStackTrace()));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed to initialize: " + e.getLocalizedMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body(success.toString());
     }
