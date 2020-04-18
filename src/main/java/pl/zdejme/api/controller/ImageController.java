@@ -1,5 +1,7 @@
 package pl.zdejme.api.controller;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,13 +46,14 @@ public class ImageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<String>> getAllImages() {
-        List<String> imageLinks = new ArrayList<>();
+    public ResponseEntity<List<Resource>> getAllImages() throws IOException {
+        PathMatchingResourcePatternResolver pmrpp = new PathMatchingResourcePatternResolver(ImageController.class.getClassLoader());
+        List<Resource> imageLinks = new ArrayList<>(Arrays.asList(pmrpp.getResources("/uploads/")));
 
-        for (Image image : imageService.findAll()) {
-            //TODO: update once server location is determined
-            imageLinks.add("https://zdej-me.herokuapp.com/uploads/" + image.getFilename());
-        }
+//        for (Image image : imageService.findAll()) {
+//            //TODO: update once server location is determined
+////            imageLinks.add("https://zdej-me.herokuapp.com/uploads/" + image.getFilename());
+//        }
 
         return ResponseEntity.ok(imageLinks);
     }
