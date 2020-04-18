@@ -41,14 +41,13 @@ public class ImageInitializer implements CommandLineRunner {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         body.put("files", List.of(
-//                new ClassPathResource("init\\GettyImages-142116239_medium.jpg", this.getClass().getClassLoader()))
-//                new FileSystemResource("src\\main\\resources\\init\\GettyImages-142116239_medium.jpg"),
-//                new FileSystemResource("src\\main\\resources\\init\\orca.jpg"),
-//                new FileSystemResource("src\\main\\resources\\init\\pacnw.jpg"),
-//                new FileSystemResource("src\\main\\resources\\init\\platonov.png"),
-//                new FileSystemResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
-//                )
-        ));
+                new ClassPathResource("init\\GettyImages-142116239_medium.jpg", this.getClass().getClassLoader()).getInputStream()
+//                new ClassPathResource("src\\main\\resources\\init\\orca.jpg"),
+//                new ClassPathResource("src\\main\\resources\\init\\pacnw.jpg"),
+//                new ClassPathResource("src\\main\\resources\\init\\platonov.png"),
+//                new ClassPathResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
+                )
+        );
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
