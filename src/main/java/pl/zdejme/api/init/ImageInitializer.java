@@ -48,7 +48,7 @@ public class ImageInitializer implements CommandLineRunner {
 //                new FileSystemResource("src\\main\\resources\\init\\platonov.png"),
 //                new FileSystemResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
 //                )
-        );
+        ));
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
