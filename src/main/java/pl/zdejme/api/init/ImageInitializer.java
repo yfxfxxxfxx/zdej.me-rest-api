@@ -44,19 +44,19 @@ public class ImageInitializer implements CommandLineRunner {
 
         body.put("files", List.of(
                 //this configuration is required for Heroku because Heroku must extract the resources from the JAR instead of from an exploded classpath
-                //does not work locally however - for local startup new ClassPathResource(path, this.getClass().getClassLoader()) is required
+                //does not work locally however - for local startup new ClassPathResource(path from content root, this.getClass().getClassLoader()) is required
                 ImageInitializer.class.getResource("/init/GettyImages-142116239_medium.jpg"),
-                ImageInitializer.class.getResource("src\\main\\resources\\init\\orca.jpg"),
-                ImageInitializer.class.getResource("src\\main\\resources\\init\\pacnw.jpg"),
-                ImageInitializer.class.getResource("src\\main\\resources\\init\\platonov.png"),
-                ImageInitializer.class.getResource("src\\main\\resources\\init\\svaneti-mountains.jpg")
+                ImageInitializer.class.getResource("/init/orca.jpg"),
+                ImageInitializer.class.getResource("/init/pacnw.jpg"),
+                ImageInitializer.class.getResource("/init/platonov.png"),
+                ImageInitializer.class.getResource("/init/svaneti-mountains.jpg")
                 )
         );
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         String serverUrl = "https://zdej-me.herokuapp.com/image/multiple-upload-init";
-        //url for local nginx init
+        //url for local init
 //        String localServerUrl = "http://localhost/image/multiple-upload-init";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
