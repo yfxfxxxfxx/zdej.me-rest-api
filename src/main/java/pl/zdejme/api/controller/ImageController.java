@@ -46,14 +46,13 @@ public class ImageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Resource>> getAllImages() throws IOException {
-        PathMatchingResourcePatternResolver pmrpp = new PathMatchingResourcePatternResolver(ImageController.class.getClassLoader());
-        List<Resource> imageLinks = new ArrayList<>(Arrays.asList(pmrpp.getResources("/uploads/")));
+    public ResponseEntity<List<String>> getAllImages() throws IOException {
+        List<String> imageLinks = new ArrayList<>();
 
-//        for (Image image : imageService.findAll()) {
-//            //TODO: update once server location is determined
-////            imageLinks.add("https://zdej-me.herokuapp.com/uploads/" + image.getFilename());
-//        }
+        for (Image image : imageService.findAll()) {
+            //TODO: update once server location is determined
+            imageLinks.add("https://zdej-me.herokuapp.com/uploads/" + image.getFilename());
+        }
 
         return ResponseEntity.ok(imageLinks);
     }
