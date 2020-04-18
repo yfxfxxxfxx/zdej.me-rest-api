@@ -13,10 +13,7 @@ import pl.zdejme.api.util.ImageUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 //TODO: update once client location determined
 @CrossOrigin(origins = "http://localhost:4200")
@@ -131,7 +128,7 @@ public class ImageController {
                 success.append(currentImage.getFilename()).append("\n");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed to initialize: " + e.getLocalizedMessage());
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed to initialize: " + Arrays.toString(e.getStackTrace()));
         }
         return ResponseEntity.status(HttpStatus.OK).body(success.toString());
     }
