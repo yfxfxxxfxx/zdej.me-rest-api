@@ -41,7 +41,7 @@ public class ImageInitializer implements CommandLineRunner {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         body.put("files", List.of(
-                new ClassPathResource("init\\GettyImages-142116239_medium.jpg", this.getClass().getClassLoader()))
+//                new ClassPathResource("init\\GettyImages-142116239_medium.jpg", this.getClass().getClassLoader()))
 //                new FileSystemResource("src\\main\\resources\\init\\GettyImages-142116239_medium.jpg"),
 //                new FileSystemResource("src\\main\\resources\\init\\orca.jpg"),
 //                new FileSystemResource("src\\main\\resources\\init\\pacnw.jpg"),
