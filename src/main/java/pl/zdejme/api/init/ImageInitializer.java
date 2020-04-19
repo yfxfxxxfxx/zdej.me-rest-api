@@ -17,12 +17,15 @@ import org.springframework.web.client.RestTemplate;
 import pl.zdejme.api.util.FileUtils;
 
 import javax.annotation.PreDestroy;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -43,14 +46,23 @@ public class ImageInitializer implements CommandLineRunner {
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
+//        try (InputStream inputStream = getClass().getResourceAsStream("/input.txt");
+//             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+//            String contents = reader.lines()
+//                    .collect(Collectors.joining(System.lineSeparator()));
+//        }
+
+
+
         body.put("files", List.of(
                 //this configuration is required for Heroku because Heroku must extract the resources from the JAR instead of from an exploded classpath
                 //does not work locally however - for local startup new ClassPathResource(path from content root, this.getClass().getClassLoader()) is required
-                new ClassPathResource("/init/GettyImages-142116239_medium.jpg"),
-                new ClassPathResource("/init/orca.jpg"),
-                new ClassPathResource("/init/pacnw.jpg"),
-                new ClassPathResource("/init/platonov.png"),
-                new ClassPathResource("/init/svaneti-mountains.jpg")
+//                new ClassPathResource("/init/GettyImages-142116239_medium.jpg"),
+//                new ClassPathResource("/init/orca.jpg"),
+//                new ClassPathResource("/init/pacnw.jpg"),
+//                new ClassPathResource("/init/platonov.png"),
+                new ClassPathResource("/init/svaneti-mountains.jpg", ImageInitializer.class.getClassLoader())
+//                new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/init/orca.jpg"))).lines().collect(Collectors.joining(System.lineSeparator()))
 //                ImageInitializer.class.getClassLoader().getResource("/init/svaneti-mountains.jpg")
 //                ImageInitializer.class.getResource("/init/GettyImages-142116239_medium.jpg"),
 //                ImageInitializer.class.getResource("/init/orca.jpg"),
@@ -62,9 +74,9 @@ public class ImageInitializer implements CommandLineRunner {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverUrl = "https://zdej-me.herokuapp.com/image/multiple-upload-init";
+//        String serverUrl = "https://zdej-me.herokuapp.com/image/multiple-upload-init";
         //url for local init
-//        String serverUrl = "http://localhost/image/multiple-upload-init";
+        String serverUrl = "http://localhost/image/multiple-upload-init";
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
         log.info(Objects.requireNonNull(response).getBody());
