@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -61,8 +62,7 @@ public class ImageInitializer implements CommandLineRunner {
 //                new ClassPathResource("/init/orca.jpg"),
 //                new ClassPathResource("/init/pacnw.jpg"),
 //                new ClassPathResource("/init/platonov.png"),
-                new ClassPathResource("/init/svaneti-mountains.jpg", ImageInitializer.class.getClassLoader())
-//                new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/init/orca.jpg"))).lines().collect(Collectors.joining(System.lineSeparator()))
+//                new ClassPathResource("/init/svaneti-mountains.jpg", ImageInitializer.class.getClassLoader())
 //                ImageInitializer.class.getClassLoader().getResource("/init/svaneti-mountains.jpg")
 //                ImageInitializer.class.getResource("/init/GettyImages-142116239_medium.jpg"),
 //                ImageInitializer.class.getResource("/init/orca.jpg"),
