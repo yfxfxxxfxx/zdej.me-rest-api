@@ -46,12 +46,12 @@ public class ImageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<String>> getAllImages() throws IOException {
+    public ResponseEntity<List<String>> getAllImages() {
         List<String> imageLinks = new ArrayList<>();
 
         for (Image image : imageService.findAll()) {
             //TODO: update once server location is determined
-            imageLinks.add("https://zdej-me.herokuapp.com/uploads/" + image.getFilename());
+            imageLinks.add("http://localhost/uploads/" + image.getFilename());
         }
 
         return ResponseEntity.ok(imageLinks);
